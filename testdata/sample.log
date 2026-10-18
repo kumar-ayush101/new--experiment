@@ -1,0 +1,10 @@
+level=info status=200 method=GET path=/ bytes=512 ms=4
+level=info status=200 method=GET path=/login bytes=1024 ms=8
+level=warn status=404 method=GET path=/favicon.ico bytes=0 ms=1
+level=error status=500 method=POST path=/api/checkout bytes=0 ms=120
+level=info status=200 method=GET path=/api/products bytes=4096 ms=22
+level=error status=503 method=POST path=/api/checkout bytes=0 ms=90
+level=info status=200 method=GET path=/api/products bytes=4096 ms=19
+level=warn status=404 method=GET path=/old-link bytes=0 ms=2
+level=error status=500 method=GET path=/api/products bytes=0 ms=200
+level=info status=200 method=GET path=/ bytes=512 ms=5

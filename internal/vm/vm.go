@@ -5,6 +5,7 @@ import (
 	"io"
 	"math"
 	"sort"
+	"strings"
 
 	"github.com/kumar-ayush101/new--experiment/internal/bytecode"
 	"github.com/kumar-ayush101/new--experiment/internal/record"
@@ -26,6 +27,12 @@ type VM struct {
 // New builds a VM for a program and input parser.
 func New(prog *bytecode.Program, parser source.LineParser) *VM {
 	return &VM{prog: prog, parser: parser}
+}
+
+// RunString runs the program over an in-memory log string. Convenience for
+// tests and small inputs.
+func (vm *VM) RunString(logs string) (*Result, error) {
+	return vm.Run(strings.NewReader(logs))
 }
 
 // Run streams lines from r through the pipeline and returns the result.
