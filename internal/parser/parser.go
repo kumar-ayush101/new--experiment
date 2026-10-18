@@ -265,7 +265,17 @@ func precedence(t token.Type) int {
 }
 
 func (p *Parser) parseExpr(minPrec int) (ast.Expr, error) {
-	left, err := p.parseUnary()
+	// `not` binds looser than comparisons: `not a == b` is `not (a == b)`.
+	if p.cur.Type == token.NOT {
+		p.next()
+		operand, err := p.parseExpr(precedence(token.AND)) // not applies to the following comparison/and-group
+		if err != nil {
+			return nil, err
+		}
+		return &ast.UnaryExpr{Op: "not", Operand: operand}, nil
+	}
+
+	left, err := p.parsePrimary()
 	if err != nil {
 		return nil, err
 	}
@@ -282,18 +292,6 @@ func (p *Parser) parseExpr(minPrec int) (ast.Expr, error) {
 		}
 		left = &ast.BinaryExpr{Op: op, Left: left, Right: right}
 	}
-}
-
-func (p *Parser) parseUnary() (ast.Expr, error) {
-	if p.cur.Type == token.NOT {
-		p.next()
-		operand, err := p.parseUnary()
-		if err != nil {
-			return nil, err
-		}
-		return &ast.UnaryExpr{Op: "not", Operand: operand}, nil
-	}
-	return p.parsePrimary()
 }
 
 func (p *Parser) parsePrimary() (ast.Expr, error) {
